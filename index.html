@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Swiper</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .swiper {
+      margin: 50px auto;
+      width: 400px;
+      height: 240px;
+      border: 1px solid #1abc9c;
+      overflow: hidden;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      line-height: 100%;
+      width: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btns {
+      margin: 50px auto;
+      width: 400px;
+    }
+  </style>
+</head>
+<body>
+<div class="swiper">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide" style="background-color: red">1</div>
+    <div class="swiper-slide" style="background-color: blue">2</div>
+    <div class="swiper-slide" style="background-color: yellow">3</div>
+    <div class="swiper-slide" style="background-color: green">4</div>
+  </div>
+</div>
+<div class="btns">
+  <button class="prev">←</button>
+  <button class="next">→</button>
+</div>
+<script src="swiper.js"></script>
+<script>
+  let prev = document.querySelector('.prev');
+  let swiperWrapper = document.querySelector('.swiper-wrapper');
+  prev.addEventListener('click', () => {
+    swiperWrapper.style.transform = 'translateX(-400px)';
+  })
+
+  new Swiper().slide();
+</script>
+</body>
+</html>
