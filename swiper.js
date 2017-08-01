@@ -3,24 +3,25 @@ class Swiper {
    *
    * @param obj newSwiper时指定容器
    * @param param 设置部分参数
-   *          duration 滑动速度，对应 transitionDuration，默认值 300
-   *          stay autoplay时停留的时间，默认值 3000
-   *          
+   *          speed 滑动速度，对应 transitionDuration，默认值 300
+   *          autopaly 自动轮播时停留的时间，默认值 3000
    */
-  constructor(obj, param = {duration: 300, stay: 3000}) {
+  constructor(obj, {speed = 300, autoplay = 3000} = {}) {
     this.obj = document.querySelector(obj);
     this.wrapper = this.obj.querySelector('.swiper-wrapper');
-    this.param = param;
     this.count = 0;
     this.length = this.obj.children.length;
     this.width = this.obj.offsetWidth;
+
+    this.speed = speed;
+    this.autoplay = autoplay;
 
     this.init();
   }
 
   init() {
-    this.autoplay();
     this.btn();
+    if (this.autoplay) this.autoPlay();
     if (this.obj.querySelector('.swiper-nav')) this.nav();
   }
 
@@ -32,12 +33,12 @@ class Swiper {
     // 设定滑出左侧的距离，让 wrapper 通过 transform 滑动过去
     // this.count * this.width 为距离值，左滑取负值
     // 动态设置 transitionDuration 来确保 PNswitch 执行时没有动画效果
-    let distance = -(count * this.width);
-    this.wrapper.style.transitionDuration = this.param.duration + 'ms';
+    const distance = -(count * this.width);
+    this.wrapper.style.transitionDuration = this.speed + 'ms';
     this.wrapper.style.transform = 'translateX(' + distance + 'px)';
     setTimeout(() => {
       this.wrapper.style.transitionDuration = '';
-    }, this.param.duration)
+    }, this.speed)
   }
 
   /**
@@ -82,7 +83,7 @@ class Swiper {
     setTimeout(() => {
       node.style.left = '';
       this.wrapper.style.transform = 'translateX(' + distance + 'px)';
-    }, this.param.duration)
+    }, this.speed)
   }
 
   /**
@@ -96,7 +97,7 @@ class Swiper {
       } else if (e.target.classList.contains('swiper-next')) {
         this.next();
       } else if (e.target.classList.contains('swiper-nav-btn')) {
-        let nav = this.obj.querySelector('.swiper-nav');
+        const nav = this.obj.querySelector('.swiper-nav');
         this.count = Array.from(nav.children).indexOf(e.target);
         this.move(this.count);
       }
@@ -108,9 +109,9 @@ class Swiper {
    * nav 初始化
    */
   nav() {
-    let nav = this.obj.querySelector('.swiper-nav');
+    const nav = this.obj.querySelector('.swiper-nav');
     for (let i = 0; i <= this.length; i++) {
-      let a = document.createElement('a');
+      const a = document.createElement('a');
       a.className = 'swiper-nav-btn';
       nav.appendChild(a);
     }
@@ -121,8 +122,8 @@ class Swiper {
    * 设置当前的 nav-btn 样式
    */
   setNavCurrent() {
-    let nav = this.obj.querySelector('.swiper-nav');
-    let current = nav.querySelector('.current');
+    const nav = this.obj.querySelector('.swiper-nav');
+    const current = nav.querySelector('.current');
     if (current) current.classList.remove('current');
     nav.children[this.count].classList.add('current');
   }
@@ -130,10 +131,10 @@ class Swiper {
   /**
    * 自动播放
    */
-  autoplay() {
+  autoPlay() {
     setInterval(() => {
       this.next();
       this.setNavCurrent();
-    }, this.param.stay)
+    }, this.autoplay)
   }
 }
